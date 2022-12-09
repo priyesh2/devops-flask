@@ -30,4 +30,4 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: cerebro46/flaskapp:$(date +%s)-
+        tags: cerebro46/flaskapp
