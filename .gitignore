@@ -4,3 +4,4 @@ vault.txt
 .txt
 *.vars
 .vars
+.env
