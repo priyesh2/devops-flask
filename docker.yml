@@ -1,10 +1,14 @@
 ---
 
 - name: "Building Docker Image From Github Repository"
-  hosts: 127.0.0.1
-  connection: local
+
+  hosts: localhost
+
   become: true
   
+  vars_files:
+    - .vars
+
   vars:
 
     project_repo_url: "https://github.com/priyesh2/devops-flask"
@@ -18,10 +22,6 @@
     - name: " Installing Python Extension For Docker"
       pip:
         name: docker-py
-  
-    - name: " Requests module for ansible"
-      pip:
-        name: requests        
             
     - name: " Clonning Repo {{ project_repo_url }}"
 
@@ -35,9 +35,20 @@
      
     - debug:
 
-        var: clone_status      
-        
-        
+        var: clone_status          
+
+    - name: "Loging to Docker-hub Account"
+
+      when: clone_status.changed == true
+
+      docker_login:
+
+        username: "{{ username }}"
+        password: "{{ password }}"
+
+        state: present
+
+
     - name: "Creating Docker Image And Push To Docker-hub"
 
       when: clone_status.changed == true
@@ -86,6 +97,16 @@
         - "{{ clone_status.after }}"
 
         - latest
+
+    - name: "Build - Logout to Docker-hub Account"
+
+      when: clone_status.changed == true
+
+      docker_login:
+      
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: absent
 
        
 - name: "Running Image"
