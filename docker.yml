@@ -17,6 +17,10 @@
     - name: " Installing Python Extension For Docker"
       pip:
         name: docker-py
+  
+    - name: " Requests module for ansible"
+      pip:
+        name: requests        
             
     - name: " Clonning Repo {{ project_repo_url }}"
 
