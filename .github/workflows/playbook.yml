@@ -22,6 +22,11 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+     
+    - name: testing secrets
+      env:
+         VAULT_PASS: ${{ secrets.VAULT_PASS }}
+      run: echo $VAULT_PASS >> vault.txt
         
     - name: running playbook 
       run: ansible-vault decrypt docker.vars --vault-password-file=vault.txt && ansible-playbook docker.yml
