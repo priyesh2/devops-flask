@@ -24,6 +24,6 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         
     - name: running playbook 
-      run: ansible-playbook docker.yml --extra-vars "username=$secrets.DOCKERHUB_USERNAME password=$secrets.DOCKERHUB_TOKEN" 
+      run: ansible-vault decrypt .vars --vault-password-file=vault.txt && ansible-playbook docker.yml
       
     
