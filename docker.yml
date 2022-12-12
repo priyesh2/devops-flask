@@ -6,9 +6,6 @@
 
   become: true
   
-  vars_files:
-    - .vars
-
   vars:
 
     project_repo_url: "https://github.com/priyesh2/devops-flask"
