@@ -1,0 +1,130 @@
+---
+
+- name: "Building Docker Image From Github Repository"
+
+  hosts: localhost
+
+  become: true
+  
+  vars:
+
+    project_repo_url: "https://github.com/priyesh2/devops-flask"
+
+    clone_dir: "/var/flask_app/"
+
+    image_name: "cerebro46/newflaskapp"
+
+  tasks:
+  
+    - name: " Installing Python Extension For Docker"
+      pip:
+        name: docker-py
+            
+    - name: " Clonning Repo {{ project_repo_url }}"
+
+      git:
+
+        repo: "{{project_repo_url}}"
+
+        dest: "{{ clone_dir }}"
+
+      register: clone_status
+     
+    - debug:
+
+        var: clone_status      
+        
+        
+    - name: "Creating Docker Image And Push To Docker-hub"
+
+      when: clone_status.changed == true
+
+      docker_image:
+
+        source: build
+
+        build:
+
+          path: "{{ clone_dir }}"
+
+          pull: yes
+
+        name: "{{ image_name }}"
+
+        tag: "{{ item }}"
+
+        push: true
+
+        force_tag: yes
+
+        force_source: yes
+
+      with_items:
+
+        - "{{ clone_status.after }}"
+
+        - latest  
+
+        
+    - name: "Build - Deleting Local Image From Build Server"
+
+      when: clone_status.changed == true
+
+      docker_image:
+
+        state: absent
+
+        name: "{{ image_name }}"
+
+        tag: "{{ item }}"
+
+      with_items:
+
+        - "{{ clone_status.after }}"
+
+        - latest
+
+       
+- name: "Running Image"
+
+  hosts: localhost
+
+  become: true
+
+  vars:
+
+    image_name: "cerebro46/newflaskapp"
+
+  tasks:
+                          
+    - name: "Pulling Docker Image"
+
+      docker_image:
+
+        name: "{{ image_name }}"
+
+        source: pull
+
+        force_source: true
+
+      register: image_status      
+
+    
+
+    - name: " Run Container"
+
+      when: image_status.changed == true     
+
+      docker_container:
+
+        name: flaskapp
+
+        image: "{{ image_name }}:latest"
+
+        recreate: yes
+
+        pull: yes
+
+        published_ports:
+
+          - "80:5000"
