@@ -2,8 +2,6 @@
 
 - name: "Building Docker Image From Github Repository"
 
-  hosts: localhost
-
   become: true
   
   vars:
