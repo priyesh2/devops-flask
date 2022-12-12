@@ -33,6 +33,6 @@ jobs:
          VAULT_PASS: ${{ secrets.VAULT_PASS }}
       run: | 
         echo $VAULT_PASS >> secret.txt
-        ansible-vault decrypt docker.vars --vault-password-file ~/ secret.txt && ansible-playbook docker.yml
+        ansible-vault decrypt docker.vars --vault-password-file=vault.txt && ansible-playbook docker.yml
       
     
