@@ -24,6 +24,6 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         
     - name: running playbook 
-      run: ansible-playbook --connection=local --inventory 127.0.0.1 --limit 127.0.0.1 docker.yml -i ansible_hosts
+      run: ansible-playbook docker.yml
       
     
