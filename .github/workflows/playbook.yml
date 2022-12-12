@@ -26,8 +26,9 @@ jobs:
     - name: testing secrets
       env:
          VAULT_PASS: ${{ secrets.VAULT_PASS }}
-      run: echo $VAULT_PASS >> vault.txt
+      run: echo $VAULT_PASS >> secret.txt
         
-    
+    - name: running playbook 
+      run: ansible-vault decrypt docker.vars --vault-password-file=vault.txt && ansible-playbook docker.yml
       
     
