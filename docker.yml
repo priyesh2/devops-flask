@@ -6,6 +6,9 @@
 
   become: true
   
+  vars_files:
+    - docker.vars
+
   vars:
 
     project_repo_url: "https://github.com/priyesh2/devops-flask"
@@ -40,8 +43,8 @@
 
       docker_login:
 
-        username: "{{ username }}"
-        password: "{{ password }}"
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         state: present
 
@@ -101,8 +104,8 @@
 
       docker_login:
       
-        username: "{{ username }}"
-        password: "{{ password }}"
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
         state: absent
 
        
@@ -149,3 +152,4 @@
         published_ports:
 
           - "80:5000"
+
