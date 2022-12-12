@@ -1,3 +1,6 @@
+docker.vars
 vault.txt
 *.txt
 .txt
+*.vars
+.vars
