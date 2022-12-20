@@ -1,7 +1,7 @@
 pipeline {
   agent{ label "test" }
   stages {
-    stages("build") {
+    stage("build") {
       steps {
         sh """
           docker build -t new_test .
