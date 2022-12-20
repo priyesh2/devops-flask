@@ -1,5 +1,7 @@
 pipeline {
-  agent{ label "master" }
+  agent{ 
+    docker { image 'httpd:alpine' }
+  }
   stages {
     stage("build") {
       steps {
