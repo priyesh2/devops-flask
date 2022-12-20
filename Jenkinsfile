@@ -1,7 +1,6 @@
 pipeline {
   agent{ 
-    docker { image 'httpd:alpine' }
-  }
+    docker { image 'alpine:3.8' }
   stages {
     stage("build") {
       steps {
@@ -15,6 +14,7 @@ pipeline {
         sh """
           docker container run --name flask -p 8001:5000 -d new_test
           """
+      }
       }
     }
   }
